@@ -1,0 +1,164 @@
+
+SOCIETY DRAFT
+
+
+breed [persons a-person]
+breed [houses house]
+breed [shops shop]
+breed [offices office]
+breed [flowers flower]
+
+globals [
+
+  roads ;;roads through town
+landplots ;; patches for house
+  grass ;;patches of grass
+]
+
+persons-own [target]
+
+to setup
+  ca
+  setup-patches
+  setup-turtles
+  reset-ticks
+end
+
+
+to go
+
+  move-resident
+
+tick
+
+end
+
+
+
+
+to setup-patches
+  ask patches
+  [set pcolor green
+    create-road
+    name-roads
+    name-landplots
+
+  ]
+
+end
+
+to setup-turtles
+
+
+
+  create-homes
+  make-shops
+  make-offices
+  make-persons
+  make-flowers
+end
+
+to create-road
+
+if pycor < 17 and pycor > -17 and pxcor < 3 and pxcor > -2 [ set pcolor grey ]
+if pycor < 15 and pycor > 11 [set pcolor grey]
+  if pxcor < 15 and pxcor > 11 [set pcolor grey]
+  if pycor < 3 and pycor > -2 and pxcor < 3  [ set pcolor grey ]
+end
+
+
+to create-homes
+
+  create-houses number-of-houses
+  [set shape "house"
+    move-to one-of landplots
+  set size 2
+    set color brown
+  ]
+
+end
+
+to name-roads
+
+   set roads patches with [
+    pcolor = grey
+  ]
+
+end
+
+;;to move-along
+
+  ;;if one-of neighbors = one-of roads
+   ;; [fd 1]
+;;end
+
+to name-landplots
+ set landplots patches with [
+    [pcolor] of one-of neighbors = grey and pcolor = green
+ ]
+
+end
+
+to make-persons
+  create-persons number-of-people
+  [set color blue
+    move-to one-of houses
+    set shape "person"
+    create-goal
+
+
+  ]
+
+end
+
+to make-shops
+
+  crt number-of-shops
+  [set shape "building store"
+    move-to one-of landplots
+  set size 2
+    set color red
+  ]
+
+end
+
+to make-offices
+
+  create-offices number-of-offices
+  [set shape "house"
+    move-to one-of landplots
+  set size 2
+    set color blue
+  ]
+
+end
+
+to make-flowers
+  create-flowers 10
+  [set shape "flower"
+    set size 2
+    set color yellow
+    move-to one-of patches with [pcolor = green]]
+
+end
+
+
+
+
+to move-resident
+  ask persons [
+    face target
+    fd 1
+    rt random 40
+  lt random 40
+  if not can-move? 1 [ rt 180 ]
+  ]
+
+
+end
+
+to create-goal
+
+  set target one-of offices
+
+end
