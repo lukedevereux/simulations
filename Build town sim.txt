@@ -1,5 +1,5 @@
 
-SOCIETY DRAFT
+Building a basic town (NETLOGO)
 
 
 breed [persons a-person]
