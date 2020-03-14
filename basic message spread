@@ -1,0 +1,72 @@
+breed [gossips gossip]
+breed [normals normal]
+breed [influencers influence]
+
+to setup
+  ca
+  setup-patches
+  create-gossips number-of-gossips [set color red
+    set shape "person"
+    set size 2
+    setxy random-xcor random-ycor]
+
+  create-normals number-of-normals [ set color blue
+    set shape "person"
+    set size 2
+    setxy random-xcor random-ycor]
+
+  create-influencers number-of-influencers [set color magenta
+    set shape "person"
+    set size 2.5
+    setxy random-xcor random-ycor]
+
+
+  reset-ticks
+end
+
+to setup-patches
+ask patches [set pcolor green]
+end
+
+
+to go
+  if count turtles with [color = blue] = 0 [user-message "Congrats! Everyone has got the message. You're a marketing star!" stop]
+  move-turtles
+  ask normals [
+    join-gang
+    be-influence
+  ]
+
+
+
+  tick
+
+end
+
+to move-turtles
+ask turtles [
+    fd 1
+  rt random 360]
+
+end
+
+
+
+to join-gang
+  ask gossips [
+  let prey one-of normals-here ;; grab random sheep
+  if prey != nobody [
+    ask prey [set color red
+  ]]]
+
+end
+
+to be-influence
+  ask influencers [
+    let prey normals in-radius vision
+    if prey != nobody [
+    ask prey [set color red
+        set breed gossips
+        set shape "person"
+  ]]]
+end
