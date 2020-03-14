@@ -54,7 +54,7 @@ end
 
 to join-gang
   ask gossips [
-  let prey one-of normals-here ;; grab random sheep
+  let prey one-of normals-here 
   if prey != nobody [
     ask prey [set color red
   ]]]
